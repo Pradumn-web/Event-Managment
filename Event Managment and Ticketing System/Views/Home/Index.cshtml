@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+ 
+<div class="untree_co-section product-section before-footer-section pt-4 mt-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            @foreach (var i in ViewBag.a)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 d-flex">
+                    <!-- 🔗 Entire card wrapped in anchor -->
+                    <a href="/Home/Details/@i.EventId" class="text-decoration-none text-dark w-100 h-100">
+                        <div class="card border border-dark h-100 w-100 d-flex flex-column">
+
+                            @{
+                                string base64Image = "data:image/png;base64," + Convert.ToBase64String((byte[])i.Event_Poster);
+                            }
+
+                            <div style="height: 35vh; overflow: hidden;">
+                                <img src="@base64Image"
+                                     class="img-fluid w-100 h-100"
+                                     style="object-fit: cover;"
+                                     alt="Event Poster" />
+                            </div>
+
+                            <div class="bg-dark text-white text-center py-2 fw-bold">
+                                @Convert.ToDateTime(i.Event_DateTime).ToString("dd MMM yyyy hh:mm tt")
+                            </div>
+
+                            <div class="text-center px-2 py-2 fw-semibold flex-grow-1">
+                                <div class="fw-bold text-truncate" title="@i.Event_title">
+                                    @i.Event_title
+                                </div>
+                                <div class="text-muted text-truncate" title="@i.Speaker_Singer">
+                                    by @i.Speaker_Singer
+                                </div>
+                            </div>
+
+                            <div class="bg-info bg-opacity-25 text-center py-2">
+                                <span class="text-truncate d-inline-block w-100 px-1" title="@i.Location">@i.Location</span>
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

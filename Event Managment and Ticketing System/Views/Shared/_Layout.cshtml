@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <!-- Start Header/Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm" aria-label="Event Navigation">
+        <div class="container">
+            <!-- Brand / Logo -->
+            <a class="navbar-brand fw-bold fs-4" href="@Url.Action("Index","Home")">
+                <i class="bi bi-calendar-event-fill me-2"></i>The Events
+            </a>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="@Url.Action("Index","Home")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Events","Home")">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ListYourShow","Home")">List Your Show</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ContactUs","Home")">Contact Us</a>
+                    </li>
+                </ul>
+
+                <!-- Search Form -->
+                <form class="d-flex ms-lg-3 my-2 my-lg-0" role="search">
+                    <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-light btn-sm" type="submit">Search</button>
+                </form>
+
+                <!-- Icons -->
+                <!-- Icons -->
+                <ul class="navbar-nav ms-lg-4 d-flex align-items-center">
+                    <!-- Profile Icon -->
+                    <li class="nav-item me-3">
+                        <a class="nav-link p-0" href="@Url.Action("Profile","Home")">
+                            <img src="~/Content/Images/user.svg" alt="User" width="24" height="24" class="img-fluid d-inline-block align-middle" />
+                        </a>
+                    </li>
+
+                    <!-- Bag Icon -->
+                    <li class="nav-item">
+                        <a class="nav-link p-0" href="@Url.Action("Orders","Home")">
+                            <img src="~/Content/Images/Bag.png" alt="Cart"
+                                 width="24" height="24"
+                                 class="img-fluid d-inline-block align-middle"
+                                 style="filter: brightness(0) invert(1);" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Header/Navigation -->
+
+    <div class="container body-content bg-light text-dark d-flex flex-column min-vh-100">
+        @RenderBody()
+        <hr />
+    </div>
+    <!-- Start Footer Section -->
+    <footer class="footer-section bg-primary text-white pt-5 pb-4 shadow-sm">
+        <div class="container">
+            <!-- Newsletter Section -->
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h4 class="mb-0 d-flex align-items-center">
+                        <img src="~/Content/Images/envelope-outline.svg" alt="Newsletter" width="28" class="me-2" />
+                        Stay Updated with Our Events
+                    </h4>
+                </div>
+                <div class="col-md-6">
+                    <form class="row gx-2">
+                        <div class="col-6 col-sm-5">
+                            <input type="text" class="form-control form-control-sm" placeholder="Your Name" />
+                        </div>
+                        <div class="col-6 col-sm-5">
+                            <input type="email" class="form-control form-control-sm" placeholder="Your Email" />
+                        </div>
+                        <div class="col-12 col-sm-2">
+                            <button type="submit" class="btn btn-light btn-sm w-100">
+                                <i class="fa fa-paper-plane me-1"></i> Subscribe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer Links & Info -->
+            <div class="row g-4 border-top border-white pt-4">
+                <!-- Logo & Description -->
+                <div class="col-lg-4">
+                    <h5 class="fw-bold">The Events<span class="text-light">.</span></h5>
+                    <p>Your destination for discovering and listing exciting events across your city. Join and experience something new every week.</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-6 col-md-3">
+                            <h6 class="text-uppercase fw-bold">Company</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white text-decoration-none">About Us</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Careers</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <h6 class="text-uppercase fw-bold">Explore</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white text-decoration-none">Events</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">List Your Show</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Workshops</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <h6 class="text-uppercase fw-bold">Support</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white text-decoration-none">FAQs</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Help Center</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Live Chat</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <h6 class="text-uppercase fw-bold">Legal</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                                <li><a href="#" class="text-white text-decoration-none">Terms & Conditions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="row mt-4 pt-3 border-top border-white">
+                <div class="col-md-6 text-center text-md-start">
+                    <small>&copy;
+                    <script>document.write(new Date().getFullYear());</script> The Events. All rights reserved.</small>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white text-decoration-none me-3">Terms</a>
+                    <a href="#" class="text-white text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer Section -->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

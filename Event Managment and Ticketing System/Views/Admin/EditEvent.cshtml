@@ -1,0 +1,262 @@
+﻿@{
+    ViewBag.Title = "Edit Event";
+    var t = ViewBag.k;
+    string base64Image = "data:image/png;base64," + Convert.ToBase64String((byte[])t.Event_Poster);
+}
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="card shadow-lg rounded">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Edit Event</h2>
+                <form  id="updateform" enctype="multipart/form-data">
+                    <div class="row g-4">
+                        <input type="hidden" name="EventId" id="eventid" value="@t.EventId" /> 
+                        <!-- Image + Upload -->
+                        <div class="col-lg-4">
+                            <img id="posterPreview" src="@base64Image" class="img-fluid rounded shadow-sm mb-2" style="width:100%; height:auto; object-fit:cover;" />
+                            <label for="posterInput" class="form-label">Change Event Poster</label>
+                            <input type="file" class="form-control mb-1" id="posterInput" name="EventImage" accept="image/*" onchange="previewImage(event)">
+                            <div class="form-text">Allowed: JPG/PNG, max 2MB</div>
+                            <span id="speventposter"></span>
+                            <input type="hidden"  id="oldimage" name="oldimage" value="@Convert.ToBase64String((byte[])t.Event_Poster)" />
+
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="col-lg-8">
+                            <div class="row g-3">
+                                <!-- Title -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Event Title</label>
+                                    <input type="text" class="form-control" name="Event_title" id="eeeventtile" value="@t.Event_title" required>
+                                    <span id="speventtitle"></span>
+                                </div>
+                                <!-- Speaker -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Speaker / Singer</label>
+                                    <input type="text" class="form-control" name="Speaker_Singer" id="eespeakersinger" value="@t.Speaker_Singer">
+                                    <span id="spspeakersinger"></span>
+                                </div>
+                                <!-- Location -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" name="Location" id="eelocation" value="@t.Location">
+                                    <span id="splocation"></span>
+                                </div>
+                                <!-- DateTime -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Event Date & Time</label>
+                                    <input type="datetime-local" id="eedatetime" class="form-control" name="Event_DateTime" value="@t.Event_DateTime.ToString("yyyy-MM-ddTHH:mm")">
+                                    <span id="speventdatetime"></span>
+                                </div>
+                                <!-- Language -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Language</label>
+                                    <input type="text" class="form-control" name="Language" id="eelanguage" value="@t.language">
+                                    <span id="splanguage"></span>
+                                </div>
+                                <!-- Publish From -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Publish From</label>
+                                    <input type="date" id="eepublishform" class="form-control" name="Publish_From" value="@t.Publish_From.ToString("yyyy-MM-dd")">
+                                    <span id="sppublishform"></span>
+                                </div>
+                                <!-- Publish Till -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Publish Till</label>
+                                    <input type="date" id="eepublishtill" class="form-control" name="Publish_Till" value="@t.Publish_Till.ToString("yyyy-MM-dd")">
+                                    <span id="sppublishtill"></span>
+                                </div>
+                                <!-- Price -->
+                                <div class="col-md-4">
+                                    <label class="form-label">Price (₹)</label>
+                                    <input type="number" class="form-control" name="Price" value="@t.Price" id="price">
+                                    <span id="spprice"></span>
+                                </div>
+                                <!-- Duration -->
+                                <div class="col-md-4">
+                                    <label class="form-label">Duration</label>
+                                    <div class="input-group">
+                                        <input type="number" id="eeduration" class="form-control" name="Duration" value="@t.Duration">
+                                        <span class="input-group-text">hr</span>
+                                    </div>
+                                    <span id="spduration"></span>
+                                </div>
+                                <!-- Category -->
+                                <div class="col-md-4">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" name="category_Id" id="eecategory">
+                                        <option value="0">-- Select Category --</option>
+                                        @{
+                                            foreach (var v in ViewBag.w)
+                                            {
+                                                <option value="@v.catrgoeyId" @(v.catrgoeyId == t.catrgoeyId ? "selected" : "")>@v.category_Name</option>
+                                            }
+                                        }
+                                    </select>
+                                    <span id="spcategory"></span>
+                                </div>
+                                <!-- Description -->
+                                <div class="col-12">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" id="eedescription" name="Description" rows="4">@t.Description</textarea>
+                                    <span id="spdescription"></span>
+                                </div>
+                                <!-- Action Buttons -->
+                                <div class="col-12 text-end mt-3">
+                                    <a href="/Admin/AdminPannel" class="btn btn-outline-secondary me-2">← Back</a>
+                                    <button type="button" onclick="updatebtn()" class="btn btn-primary">Update Event</button>
+                                </div>
+                            </div>
+                        </div> <!-- col-lg-8 -->
+
+                    </div> <!-- row -->
+                </form>
+            </div> <!-- card-body -->
+        </div> <!-- card -->
+    </div> <!-- container -->
+
+    <script>
+        function updatebtn() {
+            
+            let isvalid = true;
+            //Event Poster validation start
+            
+            var p = $('#posterInput').val();
+            var allowedextensions = /(\.jpg|\.png|\.jpeg|\.gif|\.bmp|\.avif)$/i;
+            
+            if (!allowedextensions.test(p)) {
+                $('#speventposter').text('Only jpg,jpeg,png,bmp,gif,avif file is allowed');
+                $('#posterInput').val(''); // clear the invalid file
+            } else {
+                $('#speventposter').text('');//clear error if valid
+                
+            }
+            //Event Poster validation End
+
+            //Price validation start
+            var p = $('#price').val();
+            if (p == "") {
+                $('#spprice').text("Price is required").css('color', 'red');
+                isvalid = false;
+            };
+            //Price validation end
+
+            //Event Title Validation start
+            var t = $('#eeeventtile').val();
+            if (t == "") {
+                $('#speventtitle').text("Event Title is required").css('color', 'red');
+                isvalid = false;
+            };
+            //Event Title Validation End
+
+            //SpeakerSinger validation Start
+            var s = $('#eespeakersinger').val();
+            if (s == "") {
+                $('#spspeakersinger').text("Speaker/Singer name is required").css('color', 'red');
+                isvalid = false;
+            }
+            //SpeakerSinger validation End
+
+            //location validation End
+            var l = $('#eelocation').val();
+            if (l == "") {
+                $('#splocation').text('Location is required').css('color', 'red');
+                isvalid = false;
+            }
+            //location validation End
+
+            //Category validation start
+            var c = $('#eecategory').val();
+            if (c == "0") { // Since "0" is the default value
+                $('#spcategory').text("Category is Required").css('color', 'red');
+                isvalid = false;
+            } else {
+                $('#spcategory').text("");
+            }
+            //Category validation End
+
+            //language validation
+            var l = $('#eelanguage').val();
+            if (l == "") {
+                $('#splanguage').text('language is required').css('color', 'red');
+                isvalid = false;
+            };
+
+            //Eventdatatime validation start
+            var e = $('#eedatetime').val();
+            if (e == "") {
+                $('#speventdatetime').text('Event Date & time is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Eventdatetime validation end
+
+            //Publish from date validation start
+            var v = $('#eepublishform').val();
+            if (v == "") {
+                $('#sppublishform').text('Publish date is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Pubish from date validation End
+
+            //Publish till date validation start
+            var y = $('#eepublishtill').val();
+            if (y == "") {
+                $('#sppublishtill').text('Publish date is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Publish till date validation end
+
+            //Duration vaidation 
+            var dd = $('#eeduration').val();
+            if (dd == "") {
+                $('#spduration').text('Duration is required').css('color', 'red');
+                isvalid = false;
+            };
+
+            //Description validation start
+            var d = $('#eedescription').val();
+            if (d == "") {
+                $('#spdescription').text('Descripton is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Description validation end
+
+            if (!isvalid) {
+                return;
+            }
+
+            var form = $('#updateform')[0];
+            var formData = new FormData(form); 
+            formData.append("catrgoeyId", $('#eecategory').val()); 
+            
+            $.ajax({
+                url: '/Admin/UpdateEvent',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if (res.success) {
+                        swal("Good job!", res.message, "success")
+                            .then(function () {
+                                $(location).attr('href', '/Admin/AdminPannel')
+                            });
+                    } else {
+                        swal("Error", res.message, "error");
+                    }
+                },
+                error: function () {
+                    swal("Oops", "Error while updating the form", "error");
+                }
+            });
+        }
+        
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = e => document.getElementById("posterPreview").src = e.target.result;
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>

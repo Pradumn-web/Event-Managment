@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Event Details";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Assuming your layout file
+    ViewBag.ActivePage = "Details"; // For navbar active class
+
+    var j = ViewBag.d;
+
+    string base64Image = "data:image/png;base64," + Convert.ToBase64String((byte[])j.Event_Poster);
+
+}
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Poster (smaller & modern size) -->
+        <div class="col-md-4">
+            <img src="@base64Image" class="img-fluid rounded shadow-sm" alt="Event Poster" style="max-height: 380px; object-fit: cover;" />
+        </div>
+
+        <!-- Event Information -->
+        <div class="col-md-8">
+            <h2 class="fw-bold text-primary mb-1">@j.Event_title</h2>
+            <p class="text-muted">@j.language • @j.Duration h • @j.category_Name</p>
+
+            <div class="mb-3">
+                <i class="bi bi-geo-alt-fill me-1 text-danger"></i>
+                <strong>Venue:</strong> @j.Location
+            </div>
+
+            <div class="mb-3">
+                <i class="bi bi-calendar-event me-1 text-success"></i>
+                <strong>Date:</strong> @j.Event_DateTime
+            </div>
+
+            @*<div class="mb-4">
+                    <i class="bi bi-clock me-1 text-info"></i>
+                    <strong>Time:</strong> 7:00 PM onwards
+                </div>*@
+
+            <!-- Category Pricing -->
+
+            <div>
+                <h5 class="mb-2">Choose Your Seat</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-outline-secondary rounded-pill px-3 py-1" onclick="selectCategory(this)">₹@j.Price</button>
+                    @*<button class="btn btn-outline-secondary rounded-pill px-3 py-1" onclick="selectCategory(this)">Gold - ₹1500</button>
+                    <button class="btn btn-outline-secondary rounded-pill px-3 py-1" onclick="selectCategory(this)">Silver - ₹800</button>*@
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="mt-4">
+                <a href="#" class="btn btn-success btn-lg px-4">Book Tickets</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="row mt-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="bg-light p-4 rounded shadow-sm">
+                <h4 class="text-primary mb-3">About the Event</h4>
+                <p>
+                    @j.Description
+                </p>
+
+                <h5>Terms & Conditions</h5>
+                <ul class="text-muted">
+                    <li>No entry without a valid ticket.</li>
+                    <li>Tickets once booked are non-refundable.</li>
+                    <li>Carry a valid ID proof for entry.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Script to highlight category -->
+<script>
+    function selectCategory(button) {
+        document.querySelectorAll('.btn-outline-secondary').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        button.classList.add('active');
+    }
+</script>

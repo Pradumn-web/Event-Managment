@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "checkout";
+}
+
+<h2>checkout</h2>
+
+<!-- Checkout Container -->
+<div class="container my-5">
+    <div class="row g-4">
+
+        <!-- Left Column: Event Summary -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-4">
+                        <img src="https://assets-in.bmscdn.com/discovery-catalog/events/et00363059-fvufqmfkas-landscape.jpg" class="img-fluid rounded-start" alt="Event">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <h5 class="card-title">The Grand Musical Night</h5>
+                            <p class="card-text text-muted mb-1">Hindi | Live Music | 3h</p>
+                            <p class="card-text"><small class="text-body-secondary">Indira Gandhi Indoor Stadium, Delhi</small></p>
+                            <p class="card-text"><strong>Date:</strong> 20 July 2025</p>
+                            <p class="card-text"><strong>Time:</strong> 7:00 PM</p>
+                            <p class="card-text"><strong>Category:</strong> Gold</p>
+                            <p class="card-text"><strong>Tickets:</strong> 2</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: User Info & Payment -->
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 class="mb-3">Enter Your Details</h5>
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" placeholder="9876543210" required>
+                    </div>
+                </form>
+
+                <hr>
+
+                <h5 class="mb-3">Payment Summary</h5>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Ticket Price (2 x ₹1500)</span>
+                        <span>₹3000</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Convenience Fee</span>
+                        <span>₹100</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between fw-bold">
+                        <span>Total Amount</span>
+                        <span>₹3100</span>
+                    </li>
+                </ul>
+
+                <button class="btn btn-success w-100 btn-lg">Pay ₹3100</button>
+            </div>
+        </div>
+
+    </div>
+</div>

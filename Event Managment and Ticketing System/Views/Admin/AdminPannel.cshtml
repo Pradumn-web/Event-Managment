@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Event Management";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-primary fw-bold">Event Management Panel</h2>
+        <a href="/Admin/AddNewEvent" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Event
+        </a>
+    </div>
+
+    <!-- Filter/Search -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by title or location...">
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" id="filterCategory">
+                <option value="0">Filter by Category</option>
+                @foreach(var c in ViewBag.category)
+                {
+                    <option value="@c.catrgoeyId">@c.category_Name</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Event Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle bg-white shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Poster</th>
+                    <th>Title</th>
+                    <th>Date & Time</th>
+                    <th>Location</th>
+                    <th>Category</th>
+                    <th>Publish From</th>
+                    <th>Publish Till</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th style="width: 120px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="eventTable">
+                @foreach (var ad in ViewBag.Admin)
+                {
+                  
+                    string base64Image = "data:image/png;base64," + Convert.ToBase64String((byte[])ad.Event_Poster);
+                 
+
+                    <tr>
+                        <td><img src="@base64Image" width="60" height="60" class="rounded" /></td>
+                        <td>@ad.Event_title</td>
+                        <td>@ad.Event_DateTime.ToString("dd-MM-yyyy")<br><small>@ad.Event_DateTime.ToString("hh:mm tt")</small></td>
+                        <td>@ad.Location</td>
+                        <td>@ad.category_Name</td>
+                        <td>@ad.Publish_From.ToString("dd-MM-yyyy")</td>
+                        <td>@ad.Publish_Till.ToString("dd-MM-yyyy")</td>
+                        <td>₹@ad.Price</td>
+                        <td>
+                            @if (ad.Event_DateTime.Date > DateTime.Today)
+                            {
+                                <span class="badge bg-success">Upcoming</span>
+                            }
+                            else if (ad.Event_DateTime.Date == DateTime.Today)
+                            {
+                                <span class="badge bg-warning">Today</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Past</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="/Admin/EditEvent/@ad.EventId" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                            <button onclick="deleteEvent(@ad.EventId)" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                    @* More rows from loop here *@
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+
+    function deleteEvent(id) {
+        debugger;
+        if (confirm("Are you sure you want to delete this event?")) {
+            swal("Good!", "Deleted Successfully", "success").then(function () {
+                window.location.href = '/Admin/DeleteEvent/' + id;
+            });
+            
+
+        }
+        
+    }
+
+    $('#searchInput').on('input', function () {
+        var search = $(this).val().toLowerCase();
+        $('#eventTable tr').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(search) > -1);
+        });
+    });
+</script>

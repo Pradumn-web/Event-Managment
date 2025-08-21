@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "AddNewEvent";
+}
+
+@*<h2>AddNewEvent</h2>*@
+
+<div class="container py-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add New Event</h4>
+        </div>
+        <div class="card-body">
+            <form id="eventForm" enctype="multipart/form-data">
+
+                <!-- Image Upload -->
+                <div class="mb-3">
+                    <label for="eventposter" class="form-label">Event Poster</label>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <input type="file" id="eventposter" class="form-control" name="EventImage" accept="image/*" required>
+                            <span id="speventposter"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <img id="imgPreview" src="#" alt="Image Preview"
+                                 style="margin-left:30px;  max-width: 100px; height: auto; display: none; border: 1px solid #ccc; padding: 5px; border-radius: 8px;" />
+                        </div>
+                    </div>
+                </div>
+
+                @*Event Price*@
+                <div class="col-md-6">
+                    <label for="Price" class="form-label">Price</label>
+                    <input type="number" id="Price" class="form-control" name="Price" required>
+                    <span id="spprice"></span>
+                </div>
+
+                <!-- Title & Author -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="eventtitle" class="form-label">Event Title</label>
+                        <input type="text" id="eventtitle" class="form-control" name="Event_title" required>
+                        <span id="speventtitle"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="speakersinger" class="form-label">Speaker/Singer</label>
+                        <input type="text" id="speakersinger" class="form-control" name="Speaker_Singer" required>
+                        <span id="spspeakersinger"></span>
+                    </div>
+                </div>
+
+
+
+                <!-- Location & Category -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" id="location" class="form-control" name="Location" required>
+                        <span id="splocation"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-select" id="category" name="category_Id" required>
+                            <option value="0">-- Select Category --</option>
+                            @{
+                                foreach (var i in ViewBag.a)
+                                {
+                                    <option value="@i.catrgoeyId">@i.category_Name</option>
+                                }
+                            }
+
+                        </select>
+                        @*<input type="hidden" id="custId" name="custId" value="@">
+                        <span id="spcategory"></span>*@
+                    </div>
+                </div>
+
+                <!-- Event language & Date -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="language" class="form-label">language</label>
+                        <input type="text" id="language" class="form-control" name="language" required>
+                        <span id="splanguage"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="EventDateTime" class="form-label">Event Date & Time</label>
+                        <input type="datetime-local" id="EventDateTime" class="form-control" name="Event_DateTime" required>
+                        <span id="spEventDateTime"></span>
+                    </div>
+                </div>
+
+
+                <!-- Publish Dates -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="PublishFrom" class="form-label">Publish From</label>
+                        <input type="date" id="PublishFrom" class="form-control" name="Publish_From" required>
+                        <span id="spPublishFrom"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="publishtill" class="form-label">Publish Till</label>
+                        <input type="date" id="publishtill" name="Publish_Till" class="form-control" required />
+                        <span id="sppublishtill"></span>
+                    </div>
+                </div>
+
+                <!--Duration Description -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="Duration" class="form-label">Duration</label>
+                        <input type="number" id="Duration" name="Duration" class="form-control" required />
+                        <span id="spduration"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="4" placeholder="Enter event details..."></textarea>
+                        <span id="spDescription"></span>
+                    </div>
+                </div>
+
+
+
+                <!-- Save Button -->
+                <div class="d-grid">
+                    <button type="button" onclick="adddata()" class="btn btn-success btn-lg">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //Image preview code start
+        $('#eventposter').on('change', function () {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+
+                reader.onload = function (e) {
+                    $('#imgPreview')
+                        .attr('src', e.target.result)
+                        .show();//show the image
+                }
+                reader.readAsDataURL(input.files[0]);
+            };
+
+        });
+    });
+
+    function adddata() {
+        debugger;
+
+        var isvalid = true;
+            //Event Poster validation start
+            var p = $('#eventposter').val();
+            var allowedextensions = /(\.jpg|\.png|\.jpeg|\.gif|\.bmp|\.avif)$/i;
+            if (p == "") {
+                $('#speventposter').text('Image is required').css('color', 'red');
+                isvalid = false;
+            } else if (!allowedextensions.test(p)) {
+                $('#speventposter').text('Only jpg,jpeg,png,bmp,gif,avif file is allowed');
+                $('#eventposter').val(''); // clear the invalid file
+            } else {
+                $('#speventposter').text('');//clear error if valid
+            }
+            //Event Poster validation End
+
+            //Price validation start
+            var p = $('#Price').val();
+            if (p == "") {
+                $('#spprice').text("Price is required").css('color', 'red');
+                isvalid = false;
+            };
+            //Price validation end
+
+            //Event Title Validation start
+            var t = $('#eventtitle').val();
+            if (t == "") {
+                $('#speventtitle').text("Event Title is required").css('color', 'red');
+                isvalid = false;
+            };
+            //Event Title Validation End
+
+            //SpeakerSinger validation Start
+            var s = $('#speakersinger').val();
+            if (s == "") {
+                $('#spspeakersinger').text("Speaker/Singer name is required").css('color', 'red');
+                isvalid = false;
+            }
+            //SpeakerSinger validation End
+
+            //location validation End
+            var l = $('#location').val();
+            if (l == "") {
+                $('#splocation').text('Location is required').css('color', 'red');
+                isvalid = false;
+            }
+            //location validation End
+
+            //Category validation start
+            var c = $('#category').val();
+            if (c == "0") { // Since "0" is the default value
+                $('#spcategory').text("Category is Required").css('color', 'red');
+                isvalid = false;
+            } else {
+                $('#spcategory').text("");
+            }
+            //Category validation End
+
+            //language validation
+            var l = $('#language').val();
+            if (l == "") {
+                $('#splanguage').text('language is required').css('color', 'red');
+                isvalid = false;
+            };
+
+            //Eventdatatime validation start
+            var e = $('#EventDateTime').val();
+            if (e == "") {
+                $('#spEventDateTime').text('Event Date & time is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Eventdatetime validation end
+
+            //Publish from date validation start
+            var v = $('#PublishFrom').val();
+            if (v == "") {
+                $('#spPublishFrom').text('Publish date is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Pubish from date validation End
+
+            //Publish till date validation start
+            var y = $('#publishtill').val();
+            if (y == "") {
+                $('#sppublishtill').text('Publish date is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Publish till date validation end
+
+            //Duration vaidation 
+            var dd = $('#Duration').val();
+            if (dd == "") {
+                $('#spduration').text('Duration is required').css('color', 'red');
+                isvalid = false;
+            };
+
+            //Description validation start
+            var d = $('#Description').val();
+            if (d == "") {
+                $('#spDescription').text('Descripton is required').css('color', 'red');
+                isvalid = false;
+            };
+            //Description validation end
+
+            if (!isvalid) {
+                return;
+            }
+
+            var form = $('#eventForm')[0];
+            var formData = new FormData(form); //  includes file + all inputs
+            formData.append("category_Id", $('#category').val());
+            $.ajax({
+                url: '/Admin/AddNEvent',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if (res.success) {
+                        swal("Good job!", res.message, "success");
+                        $('#eventForm')[0].reset("");
+                        $('#imgPreview').attr('src', '').hide();
+                    } else {
+                        swal("Error", res.message, "error");
+                    }
+                },
+                error: function () {
+                    swal("Oops", "Error while submitting the form", "error");
+                }
+            });
+        }
+    
+
+
+
+
+
+</script>
