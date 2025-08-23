@@ -10,8 +10,7 @@ namespace Event_Managment_and_Ticketing_System.Models
     public class DALAccounts
     {
         string cs = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
-        public bool 
-            CheckLogin(Accounts a)
+        public bool CheckLogin(Accounts a)
         {
             using(SqlConnection  conn = new SqlConnection(cs))
             {

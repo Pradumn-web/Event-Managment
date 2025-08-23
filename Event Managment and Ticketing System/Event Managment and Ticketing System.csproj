@@ -133,6 +133,7 @@
     <Compile Include="Models\DALAccounts.cs" />
     <Compile Include="Models\DALAdmin.cs" />
     <Compile Include="Models\DALHome.cs" />
+    <Compile Include="Models\HomeUser.cs" />
     <Compile Include="Models\Showevent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -209,7 +210,6 @@
     <Content Include="Views\Home\checkout.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\Home\ListYourShow.cshtml" />
-    <Content Include="Views\Home\UserProfile.cshtml" />
     <Content Include="Views\Home\Orders.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\_ViewStart.cshtml" />

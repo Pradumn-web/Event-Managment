@@ -7,7 +7,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 JS (bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 </head>
@@ -52,27 +55,125 @@
                 <!-- Icons -->
                 <!-- Icons -->
                 <ul class="navbar-nav ms-lg-4 d-flex align-items-center">
-                    <!-- Profile Icon -->
-                    <li class="nav-item me-3">
-                        <a class="nav-link p-0" href="@Url.Action("Profile","Home")">
-                            <img src="~/Content/Images/user.svg" alt="User" width="24" height="24" class="img-fluid d-inline-block align-middle" />
-                        </a>
-                    </li>
 
-                    <!-- Bag Icon -->
-                    <li class="nav-item">
-                        <a class="nav-link p-0" href="@Url.Action("Orders","Home")">
-                            <img src="~/Content/Images/Bag.png" alt="Cart"
-                                 width="24" height="24"
-                                 class="img-fluid d-inline-block align-middle"
-                                 style="filter: brightness(0) invert(1);" />
-                        </a>
-                    </li>
+                    @if (Session["Name"] != null)
+                    {
+                        <!-- Agar login ho chuka hai -->
+                        <li class="nav-item me-3 d-flex align-items-center">
+                            <a class="nav-link d-flex align-items-center p-0" href="#">
+                                <img src="~/Content/Images/user.svg" alt="User" width="24" height="24"
+                                     class="img-fluid d-inline-block me-2" />
+                                <span class="align-middle">Welcome, @Session["Name"]</span>
+                            </a>
+                        </li>
+
+                        <!-- Bag Icon (Sirf login hone ke baad hi dikhana) -->
+
+                        <li class="nav-item">
+                            <a class="nav-link p-0" href="@Url.Action("Orders","Home")">
+                                <img src="~/Content/Images/Bag.png" alt="Cart"
+                                     width="24" height="24"
+                                     class="img-fluid d-inline-block align-middle"
+                                     style="filter: brightness(0) invert(1);" />
+                            </a>
+                        </li>
+
+                        <!-- Logout button -->
+                        <li class="nav-item">
+                            <a class="nav-link p-0 text-danger" href="@Url.Action("Logout","Home")">
+                                Logout
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <!-- Agar login nahi hai to modal open hoga -->
+                        <li class="nav-item me-3 d-flex align-items-center">
+                            <a class="nav-link d-flex align-items-center p-0" href="javascript:void(0);"
+                               data-bs-toggle="modal" data-bs-target="#authModal">
+                                <img src="~/Content/Images/user.svg" alt="User" width="24" height="24"
+                                     class="img-fluid d-inline-block me-2" />
+                                <span class="align-middle">Login</span>
+                            </a>
+                        </li>
+                    }
+
                 </ul>
+
             </div>
         </div>
     </nav>
     <!-- End Header/Navigation -->
+    <!--Login Popup Start-->
+    <!-- Login/Signup Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content shadow-lg border-0 rounded-4">
+
+                <!-- Header with Tabs -->
+                <div class="modal-header border-0 bg-primary text-white rounded-top-4">
+                    <ul class="nav nav-tabs card-header-tabs w-100 justify-content-around" id="authTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active text-white fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginTab" type="button" role="tab">
+                                Login
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link text-white fw-bold" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signupTab" type="button" role="tab">
+                                Sign Up
+                            </button>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body bg-light">
+                    <div class="tab-content" id="authTabsContent">
+
+                        <!-- Login Tab -->
+                        <div class="tab-pane fade show active" id="loginTab" role="tabpanel">
+                            <form action="/Home/LoginUser" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <input type="text" name="Email" class="form-control form-control-lg rounded-3" placeholder="Enter email">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Password</label>
+                                    <input type="password" name="Password" class="form-control form-control-lg rounded-3" placeholder="Enter password">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3">Login</button>
+                            </form>
+                        </div>
+
+                        <!-- Sign Up Tab -->
+                        <div class="tab-pane fade" id="signupTab" role="tabpanel">
+                            <form action="/Home/AddNewUser" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Full Name</label>
+                                    <input type="text" name="Name" class="form-control form-control-lg rounded-3" placeholder="Enter full name">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Email</label>
+                                    <input type="email" name="Email" class="form-control form-control-lg rounded-3" placeholder="Enter email">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Password</label>
+                                    <input type="password" name="Password" class="form-control form-control-lg rounded-3" placeholder="Create password">
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg w-100 rounded-3">Sign Up</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--Login Popup End-->
 
     <div class="container body-content bg-light text-dark d-flex flex-column min-vh-100">
         @RenderBody()
@@ -162,8 +263,10 @@
             <!-- Bottom Bar -->
             <div class="row mt-4 pt-3 border-top border-white">
                 <div class="col-md-6 text-center text-md-start">
-                    <small>&copy;
-                    <script>document.write(new Date().getFullYear());</script> The Events. All rights reserved.</small>
+                    <small>
+                        &copy;
+                        <script>document.write(new Date().getFullYear());</script> The Events. All rights reserved.
+                    </small>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <a href="#" class="text-white text-decoration-none me-3">Terms</a>
@@ -174,8 +277,41 @@
     </footer>
     <!-- End Footer Section -->
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+
+
+@if (TempData["Message"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            var myModal = new bootstrap.Modal(document.getElementById('authModal'));
+            myModal.show();
+
+            var signupTab = new bootstrap.Tab(document.querySelector('#signup-tab'));
+            signupTab.show();
+
+            // Success message inject karna
+            $("#signupTab").append("<div class='alert alert-success mt-3'>@TempData["Message"]</div>");
+        });
+    </script>
+}
+
+@*LoginError Massage*@
+@if (TempData["LoginError"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            var myModal = new bootstrap.Modal(document.getElementById('authModal'));
+            myModal.show();
+
+            var loginTab = new bootstrap.Tab(document.querySelector('#login-tab'));
+            loginTab.show();
+
+            // Success message inject karna
+            $("#loginTab").append("<div class='alert alert-success mt-3'>@TempData["LoginError"]</div>");
+        });
+    </script>
+}

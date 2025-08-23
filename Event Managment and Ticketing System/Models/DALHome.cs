@@ -44,7 +44,7 @@ namespace Event_Managment_and_Ticketing_System.Models
             return L;
         }
     
-    public Showevent GetElementById(int id)
+        public Showevent GetElementById(int id)
         {
             Showevent s = new Showevent();
             using (SqlConnection con = new SqlConnection(cs))
@@ -72,10 +72,52 @@ namespace Event_Managment_and_Ticketing_System.Models
                         s.category_Name = Convert.ToString(rdr["category_Name"]);
                         s.catrgoeyId = Convert.ToInt32(rdr["catrgoeyId"]);
                         
-                }
+                    }
                 }
             }
             return s;
+        }
+
+        //HomeUser
+        public void NewUser(String Name, String Email, String Password)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand("sp_HNewUser", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Name",Name);
+                cmd.Parameters.AddWithValue("@Email",Email);
+                cmd.Parameters.AddWithValue("@Password",Password);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public HomeUser LoginUser(String Email, String Password)
+        {
+            using (SqlConnection con = new SqlConnection(cs))
+            {
+                SqlCommand cmd = new SqlCommand("sp_Logincheck", con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Email",Email);
+                cmd.Parameters.AddWithValue("@Password",Password);
+                con.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                if (rdr.Read())
+                {
+                    HomeUser H = new HomeUser
+                    {
+                        Id = Convert.ToInt32(rdr["Id"]),
+                        Email = Convert.ToString(rdr["Email"]),
+                        Name = Convert.ToString(rdr["Name"])
+                    };
+                    return H;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
     }
 }
